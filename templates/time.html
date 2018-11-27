@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Time</title>
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+</head>
+<body>
+<h1>The local date and time is {{ moment(current_time).format("LLL") }}</h1>
+<h2>That was {{ moment(current_time).fromNow(refresh=True) }}</h2>
+</body>
+</html>

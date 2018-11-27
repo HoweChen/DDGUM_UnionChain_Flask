@@ -1,6 +1,9 @@
 from flask import Flask, request, make_response, redirect, render_template
+from datetime import datetime
+from flask_moment import Moment
 
 app = Flask(__name__)
+moment = Moment(app)
 
 
 @app.route('/')
@@ -20,6 +23,11 @@ def useragent():
     response.status_code = 404
     # return f"{user_agent}"
     return response
+
+
+@app.route('/time')
+def time():
+    return render_template("time.html", current_time=datetime.utcnow())
 
 
 @app.route('/baidu')
