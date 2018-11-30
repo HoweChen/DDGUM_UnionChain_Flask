@@ -1,9 +1,21 @@
-from flask import Flask, request, make_response, redirect, render_template
+from flask import Flask, request, make_response, redirect, render_template, session
 from datetime import datetime
 from flask_moment import Moment
 
+# form
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
+
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "this is a secret key"
 moment = Moment(app)
+
+
+# create new From
+class NameForm(FlaskForm):
+    name = StringField("What is your name?", validators=[DataRequired()])
+    submit = SubmitField("Submit")
 
 
 @app.route('/')
@@ -33,6 +45,20 @@ def time():
 @app.route('/baidu')
 def baidu():
     return redirect("https://www.baidu.com")
+
+
+@app.route('/newuser', methods=["GET", "POST"])
+def new_user():
+    name_form = NameForm()
+    if name_form.validate_on_submit():
+        session["name"] = name_form.name.data
+        return redirect("./success")
+    return render_template("new_user.html", form=name_form)
+
+
+@app.route('/success')
+def success():
+    return render_template("success.html")
 
 
 @app.errorhandler(404)
